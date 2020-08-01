@@ -1,0 +1,77 @@
+body {
+    background-color: bisque;
+}
+
+/*
+STEP 2.2
+*/
+.login-div-step22 {
+    padding: 15px;
+    border: solid 1px #c0c0c0;
+    box-shadow: 0 0 2px;
+    display: inline-block;
+}
+
+/*
+STEP 2.3
+- elemek egymasba agyazasa
+- osszes input, ami a login-div-step3 on belul van
+*/
+.login-div-step23 {
+    padding: 15px;
+    border: solid 1px #c0c0c0;
+    box-shadow: 0 0 2px;
+    display: inline-block;
+}
+
+.login-div-step23 input {
+    display: block;
+    margin-bottom: 7px;
+}
+
+/*
+STEP 3.1
+*/
+.login-div-step31 {
+    padding: 15px;
+    border: solid 1px #c0c0c0;
+    box-shadow: 0 0 2px;
+    display: inline-block;
+}
+
+.login-div-step31 input {
+    display: block;
+    margin-bottom: 7px;
+}
+
+.login-div-step31 input[type="email"] {
+    border: solid 2px blueviolet;
+}
+
+.login-div-step31 input[type="password"] {
+    border: solid 1px red;
+}
+
+.login-div-step31 button:hover {
+    box-shadow: 0 0 3px aqua;
+}
+
+.login-div-step31 input:hover {
+    box-shadow: 0 0 3px aqua;
+}
+
+/*
+listaelmek kivűlasztása
+*/
+
+ul li:last-child {
+    text-decoration: underline;
+}
+
+ul li:first-child {
+    color: aqua;
+}
+
+ul li:nth-child(3) {
+    color: aqua;
+}

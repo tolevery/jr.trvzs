@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous"> -->
+    <link rel="stylesheet" href="./lib/bootstrap-4.5.0-dist/css/bootstrap.min.css">
+    <script src="/main.js"></script>
+    <title>Document</title>
+</head>
+
+<body>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <a class="navbar-brand" href="/index.html">Navbar</a>
+
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav mr-auto">
+                <li class="nav-item active">
+                    <a class="nav-link" href="/index.html"> Home <span class="sr-only">(current)</span></a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/urlapok.html">urlap</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/contact.html">contact</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/javascript.html">js</a>
+                </li>
+            </ul>
+            <form class="form-inline my-2 my-lg-0">
+                <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
+                <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+            </form>
+        </div>
+    </nav>
+
+    <h1>Hello bootstrap</h1>
+
+    <div class="container">
+        <div class="row">
+            <div class="col-3">
+                oszlop 1
+            </div>
+            <div class="col-6">
+                <h3>Rendelés</h3>
+                <form>
+                    <div class="form-group">
+                        <label for="top-input">Feltét</label>
+                        <input id="top-input" type="text" name="top-input" class="form-control">
+                    </div>
+                    <div class="form-group">
+                        <label for="">Mennyiség</label>
+                        <input type="number" name="amount-input" class="form-control" value="1">
+                        <small class="form-text form-muted">minimum 1 max 10 db</small>
+                    </div>
+                    <div class="form-group">
+                        Fizetendő: <span class="show-amount"> 0 </span> Ft
+                    </div>
+                    <button onclick="calcAmount()" type="button" class="btn btn-primary">Megrendelés</button>
+                </form>
+
+                <div class="container">
+                    tombok
+                    let cars = ["valami", "valami2"];
+                </div>
+
+            </div>
+            <div class="col-3">
+                oszlop 3
+            </div>
+        </div>
+    </div>
+
+
+</body>
+
+</html>
