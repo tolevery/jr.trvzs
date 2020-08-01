@@ -1,7 +1,28 @@
 {
-    "servers": [
-      { "id": 1, "location": "Stuttgart", "date": "2018", "power": "6", "category": "C", "services": "-" },
-      { "id": 2, "location": "Lübeck", "date": "2018", "power": "6", "category": "C", "services": "-" },
-      { "id": 3, "location": "Koppenhága", "date": "2019", "power": "7", "category": "C", "services": "-" }
-    ]
-  }
+  "servers": [
+    {
+      "id": 1,
+      "location": "Stuttgart",
+      "date": "2018",
+      "power": "6",
+      "category": "C",
+      "services": "-"
+    },
+    {
+      "id": 2,
+      "location": "Lübeck",
+      "date": "2018",
+      "power": "6",
+      "category": "C",
+      "services": "-"
+    },
+    {
+      "id": 3,
+      "location": "Koppenhága",
+      "date": "2019",
+      "power": "7",
+      "category": "C",
+      "services": "-"
+    }
+  ]
+}
