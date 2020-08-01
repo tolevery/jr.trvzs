@@ -1,13 +1,13 @@
 // get data from server
 function getServerData(url) {
     let fetchOptions = {
-        mrthod: "GET",
+        method: "GET",
         mode: "cors",
         cache: "no-cache"
     };
 
     // fetch request to server
-    return fetch(url,fetchOptions).then(
+    return fetch(url, fetchOptions).then(
         //ha megjött a válasz
         response => response.json(),
         err => console.error(err)
@@ -15,17 +15,33 @@ function getServerData(url) {
 }
 
 // kattintassal
-document.querySelector("#getDataBtn").addEventListener("click", function(){
+/* 
+document.querySelector("#getDataBtn").addEventListener("click", function () {
     getServerData("http://localhost:3000/servers").then(
         //data => console.log(data)
         data => fillDataTable(data, "serversTable")
     );
 })
+*/
+
+//onload
+window.onload = (event) => {
+    startGetUsers();
+};
+
+//kattintassal
+function startGetUsers(){
+    getServerData("http://localhost:3000/servers").then(
+        data => fillDataTable(data, "serversTable")
+    );
+}
+
+document.querySelector("#getDataBtn").addEventListener("click", startGetUsers);
 
 // fill  table with server data
 function fillDataTable(data, tableID) {
     let table = document.querySelector(`#${tableID}`);
-    if(!table){
+    if (!table) {
         //console.error(`Table "${tableID}"is not found`)
         return;
     }
@@ -33,7 +49,7 @@ function fillDataTable(data, tableID) {
     //let tBody = tableID.querySelectorAll("tbody"); //not a function
     let tBody = table.querySelector("tbody");
 
-    for(let row of data) {
+    for (let row of data) {
         // console.log(row);
         let tr = createAnyElement("tr");
 
@@ -48,10 +64,11 @@ function fillDataTable(data, tableID) {
     }
 }
 
-function createAnyElement(name, attributes) { 
+
+function createAnyElement(name, attributes) {
     let element = document.createElement(name); //elem létrehozása
-    
-    for (let k in attributes){ // attrubútumokon végigmegyek
+
+    for (let k in attributes) { // attrubútumokon végigmegyek
         element.setAttribute(k, attributes[k]);
     }
     return element;
@@ -60,9 +77,11 @@ function createAnyElement(name, attributes) {
 // button group
 function createButtonGroup() {
     //befogadó div
-    let group = createAnyElement("div", {class: "btn btn-group"});
-    let infoBtn = createAnyElement("button", {class: "btn btn-info"});
-    let delBtn = createAnyElement("button", {class: "btn btn-danger"});
+    let group = createAnyElement("div", { class: "btn btn-group" });
+    let infoBtn = createAnyElement("button", { class: "btn btn-info" });
+    infoBtn.innerHTML = 'edit';
+    let delBtn = createAnyElement("button", { class: "btn btn-danger", onclick: "delRow(this)" });
+    delBtn.innerHTML = 'delete';
 
     group.appendChild(infoBtn);
     group.appendChild(delBtn);
@@ -71,4 +90,31 @@ function createButtonGroup() {
     let td = createAnyElement("td");
     td.appendChild(group);
     return td;
+}
+
+//delete
+function setBtnEvent(){
+
+}
+
+//del2
+function delRow(btn) {
+    let tr = btn.parentElement.parentElement.parentElement;
+    let id = tr.querySelector("td:first-child").innerHTML;
+    console.log(id);
+    
+    let fetchOptions = {
+        method: "DELETE",
+        mode: "cors",
+        cache: "no-cache"
+    };
+
+    fetch(`http://localhost:3000/servers/${id}`, fetchOptions).then(
+        resp => resp.json(),
+        err => console.log(err)
+    ).then(
+        data => {
+            startGetUsers();
+        }
+    );
 }
