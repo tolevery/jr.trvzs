@@ -1,7 +1,12 @@
-// keys of servers
+// Keys of servers
 let keys = ["id", "location", "date", "power", "category", "services"];
 
-// get data from server
+// Onload
+window.onload = (event) => {
+    startGetServers();
+};
+
+// Get data from server
 function getServerData(url) {
     let fetchOptions = {
         method: "GET",
@@ -9,32 +14,13 @@ function getServerData(url) {
         cache: "no-cache"
     };
 
-    // fetch request to server
     return fetch(url, fetchOptions).then(
-        //ha megjött a válasz
         response => response.json(),
         err => console.error(err)
     );
 }
 
-// kattintassal
-/* 
-document.querySelector("#getDataBtn").addEventListener("click", function () {
-    getServerData("http://localhost:3000/servers").then(
-        //data => console.log(data)
-        data => fillDataTable(data, "serversTable")
-    );
-})
-*/
-
-//onload
-/*
-window.onload = (event) => {
-    startGetServers();
-};
-*/
-
-//kattintassal
+// Get servers info
 function startGetServers() {
     getServerData("http://localhost:3000/servers").then(
         data => fillDataTable(data, "serversTable")
@@ -43,7 +29,7 @@ function startGetServers() {
 
 document.querySelector("#getDataBtn").addEventListener("click", startGetServers);
 
-// fill  table with server data
+// Fill  table with server data
 function fillDataTable(data, tableID) {
     let table = document.querySelector(`#${tableID}`);
     if (!table) {
@@ -51,26 +37,22 @@ function fillDataTable(data, tableID) {
         return;
     }
 
-
-    //let tBody = tableID.querySelectorAll("tbody"); //not a function
-
-
     let tBody = table.querySelector("tbody");
     tBody.innerHTML = '';
-    let newRow = newServerRow(); // data első eleme a kulcs miatt
+    let newRow = newServerRow();
     tBody.appendChild(newRow);
+
     for (let row of data) {
-        // console.log(row);
         let tr = createAnyElement("tr");
+
         for (let k of keys) { //kulcs szerint
             let td = createAnyElement("td");
-            //td.innerHTML = row[k];
-
             let input = createAnyElement("input", {
                 class: "form-control",
                 value: row[k],
                 name: k
             });
+
             if (k == "id") {
                 input.setAttribute("readonly", true);
             }
@@ -83,23 +65,27 @@ function fillDataTable(data, tableID) {
     }
 }
 
-
+// add element
 function createAnyElement(name, attributes) {
-    let element = document.createElement(name); //elem létrehozása
+    let element = document.createElement(name);
 
-    for (let k in attributes) { // attrubútumokon végigmegyek
+    for (let k in attributes) {
         element.setAttribute(k, attributes[k]);
     }
+
     return element;
 }
 
-// button group
+// Button group (delete, update)
 function createButtonGroup() {
     let group = createAnyElement("div", { class: "btn btn-group" });
+
     let infoBtn = createAnyElement("button", { class: "btn btn-info", onclick: "setRow(this)" });
-    infoBtn.innerHTML = 'edit';
+    infoBtn.innerHTML = 'Frissítés';
+
     let delBtn = createAnyElement("button", { class: "btn btn-danger", onclick: "delRow(this)" });
-    delBtn.innerHTML = 'delete';
+    delBtn.innerHTML = 'Törlés';
+
     group.appendChild(infoBtn);
     group.appendChild(delBtn);
 
@@ -108,6 +94,7 @@ function createButtonGroup() {
     return td;
 }
 
+// Delete row
 function delRow(btn) {
     let tr = btn.parentElement.parentElement.parentElement;
     let id = tr.querySelector("td:first-child").innerHTML;
@@ -129,39 +116,13 @@ function delRow(btn) {
     );
 }
 
-// create new table row
-
-function newServerRow() { // ??
-    let tr = createAnyElement("tr");
-
-    for (let k of keys) {
-        let td = createAnyElement("td")
-        let input = createAnyElement("input", {
-            class: "form-control",
-            name: k
-        });
-        td.appendChild(input);
-        tr.appendChild(td);
-    }
-
-    let newBtn = createAnyElement("button", {
-        class: "btn btn-success",
-        onclick: "createServer(this)"
-    });
-    newBtn.innerHTML = 'add';
-    let td = createAnyElement("td");
-    td.appendChild(newBtn);
-    tr.appendChild(td);
-    return tr;
-}
-
 // create new server
-
 function createServer(btn) {
     let tr = btn.parentElement.parentElement;
     let data = getRowData(tr);
     console.log(data);
     delete data.id;
+
     let fetchOptions = {
         method: "POST",
         mode: "cors",
@@ -180,6 +141,7 @@ function createServer(btn) {
     );
 }
 
+// Get table row
 function getRowData(tr) {
     let inputs = tr.querySelectorAll("input.form-control");
     let data = {};
@@ -191,7 +153,34 @@ function getRowData(tr) {
     return data;
 }
 
-// set data
+// Create new table row
+function newServerRow() { // ??
+    let tr = createAnyElement("tr");
+
+    for (let k of keys) {
+        let td = createAnyElement("td")
+        let input = createAnyElement("input", {
+            class: "form-control",
+            name: k
+        });
+        td.appendChild(input);
+        tr.appendChild(td);
+    }
+
+    let newBtn = createAnyElement("button", {
+        class: "btn btn-success",
+        onclick: "createServer(this)"
+    });
+    newBtn.innerHTML = 'Hozzáadás';
+    let td = createAnyElement("td");
+
+    td.appendChild(newBtn);
+    tr.appendChild(td);
+
+    return tr;
+}
+
+// PUT row
 function setRow(btn) {
     let tr = btn.parentElement.parentElement.parentElement;
     let data = getRowData(tr);
