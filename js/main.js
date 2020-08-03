@@ -1,3 +1,6 @@
+// keys of servers
+let keys = ["id", "location", "date", "power", "category", "services"];
+
 // get data from server
 function getServerData(url) {
     let fetchOptions = {
@@ -25,35 +28,42 @@ document.querySelector("#getDataBtn").addEventListener("click", function () {
 */
 
 //onload
+/*
 window.onload = (event) => {
-    startGetUsers();
+    startGetServers();
 };
+*/
 
 //kattintassal
-function startGetUsers(){
+function startGetServers() {
     getServerData("http://localhost:3000/servers").then(
         data => fillDataTable(data, "serversTable")
     );
 }
 
-document.querySelector("#getDataBtn").addEventListener("click", startGetUsers);
+document.querySelector("#getDataBtn").addEventListener("click", startGetServers);
 
 // fill  table with server data
 function fillDataTable(data, tableID) {
     let table = document.querySelector(`#${tableID}`);
     if (!table) {
-        //console.error(`Table "${tableID}"is not found`)
+        console.error(`Table "${tableID}"is not found`)
         return;
     }
 
-    //let tBody = tableID.querySelectorAll("tbody"); //not a function
-    let tBody = table.querySelector("tbody");
 
+    //let tBody = tableID.querySelectorAll("tbody"); //not a function
+
+
+    let tBody = table.querySelector("tbody");
+    tBody.innerHTML = '';
+    let newRow = newServerRow(); // data első eleme a kulcs miatt
+    tBody.appendChild(newRow);
     for (let row of data) {
         // console.log(row);
         let tr = createAnyElement("tr");
 
-        for (let k in row) { //kulcs szerint
+        for (let k of keys) { //kulcs szerint
             let td = createAnyElement("td");
             td.innerHTML = row[k];
             tr.appendChild(td);
@@ -76,33 +86,23 @@ function createAnyElement(name, attributes) {
 
 // button group
 function createButtonGroup() {
-    //befogadó div
     let group = createAnyElement("div", { class: "btn btn-group" });
-    let infoBtn = createAnyElement("button", { class: "btn btn-info" });
-    infoBtn.innerHTML = 'edit';
+    // let infoBtn = createAnyElement("button", { class: "btn btn-info" });
     let delBtn = createAnyElement("button", { class: "btn btn-danger", onclick: "delRow(this)" });
-    delBtn.innerHTML = 'delete';
-
-    group.appendChild(infoBtn);
+    delBtn.innerHTML = 'DEL';
+    // group.appendChild(infoBtn);
     group.appendChild(delBtn);
 
-    // cella létrehozása
     let td = createAnyElement("td");
     td.appendChild(group);
     return td;
 }
 
-//delete
-function setBtnEvent(){
-
-}
-
-//del2
 function delRow(btn) {
     let tr = btn.parentElement.parentElement.parentElement;
     let id = tr.querySelector("td:first-child").innerHTML;
     console.log(id);
-    
+
     let fetchOptions = {
         method: "DELETE",
         mode: "cors",
@@ -114,7 +114,69 @@ function delRow(btn) {
         err => console.log(err)
     ).then(
         data => {
-            startGetUsers();
+            startGetServers();
         }
     );
+}
+
+// create new table row
+
+function newServerRow() { // ??
+    let tr = createAnyElement("tr");
+
+    for (let k of keys) {
+        let td = createAnyElement("td")
+        let input = createAnyElement("input", {
+            class: "form-control",
+            name: k
+        });
+        td.appendChild(input);
+        tr.appendChild(td);
+    }
+
+    let newBtn = createAnyElement("button", {
+        class: "btn btn-success",
+        onclick: "createServer(this)"
+    });
+    newBtn.innerHTML = 'add';
+    let td = createAnyElement("td");
+    td.appendChild(newBtn);
+    tr.appendChild(td);
+    return tr;
+}
+
+// create new server
+
+function createServer(btn) {
+    let tr = btn.parentElement.parentElement;
+    let data = getRowData(tr);
+    console.log(data);
+    delete data.id;
+    let fetchOptions = {
+        method: "POST",
+        mode: "cors",
+        cache: "no-cache",
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(data)
+    };
+
+    fetch(`http://localhost:3000/servers`, fetchOptions).then(
+        resp => resp.json(),
+        err => console.error(err)
+    ).then(
+        data => startGetServers() //console.log(data)
+    );
+}
+
+function getRowData(tr) {
+    let inputs = tr.querySelectorAll("input.form-control");
+    let data = {};
+
+    for (let i = 0; i < inputs.length; i++) {
+        data[inputs[i].name] = inputs[i].value;
+    }
+
+    return data;
 }
