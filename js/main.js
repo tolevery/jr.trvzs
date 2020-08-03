@@ -62,10 +62,19 @@ function fillDataTable(data, tableID) {
     for (let row of data) {
         // console.log(row);
         let tr = createAnyElement("tr");
-
         for (let k of keys) { //kulcs szerint
             let td = createAnyElement("td");
-            td.innerHTML = row[k];
+            //td.innerHTML = row[k];
+
+            let input = createAnyElement("input", {
+                class: "form-control",
+                value: row[k],
+                name: k
+            });
+            if (k == "id") {
+                input.setAttribute("readonly", true);
+            }
+            td.appendChild(input);
             tr.appendChild(td);
         }
         let btnGroup = createButtonGroup();
@@ -87,10 +96,11 @@ function createAnyElement(name, attributes) {
 // button group
 function createButtonGroup() {
     let group = createAnyElement("div", { class: "btn btn-group" });
-    // let infoBtn = createAnyElement("button", { class: "btn btn-info" });
+    let infoBtn = createAnyElement("button", { class: "btn btn-info", onclick: "setRow(this)" });
+    infoBtn.innerHTML = 'edit';
     let delBtn = createAnyElement("button", { class: "btn btn-danger", onclick: "delRow(this)" });
-    delBtn.innerHTML = 'DEL';
-    // group.appendChild(infoBtn);
+    delBtn.innerHTML = 'delete';
+    group.appendChild(infoBtn);
     group.appendChild(delBtn);
 
     let td = createAnyElement("td");
@@ -179,4 +189,26 @@ function getRowData(tr) {
     }
 
     return data;
+}
+
+// set data
+function setRow(btn) {
+    let tr = btn.parentElement.parentElement.parentElement;
+    let data = getRowData(tr);
+    let fetchOptions = {
+        method: "PUT",
+        mode: "cors",
+        cache: "no-cache",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify(data)
+    };
+
+    fetch(`http://localhost:3000/servers/${data.id}`, fetchOptions).then(
+        resp => resp.json(),
+        err => console.error(err)
+    ).then(
+        data => startGetServers()
+    );
 }
