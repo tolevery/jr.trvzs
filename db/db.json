@@ -23,6 +23,54 @@
       "power": "1",
       "category": "C",
       "services": "-"
+    },
+    {
+      "location": "Budapest",
+      "date": "2020",
+      "power": "1",
+      "category": "C",
+      "services": "-",
+      "id": 5
+    },
+    {
+      "id": 6,
+      "location": "22",
+      "date": "33",
+      "power": "33",
+      "category": "33",
+      "services": "33"
+    },
+    {
+      "location": "0",
+      "date": "0",
+      "power": "0",
+      "category": "0",
+      "services": "0",
+      "id": 7
+    },
+    {
+      "location": "teszt",
+      "date": "tesu",
+      "power": "teszt",
+      "category": "D",
+      "services": "22",
+      "id": 8
+    },
+    {
+      "location": "",
+      "date": "",
+      "power": "",
+      "category": "",
+      "services": "",
+      "id": 9
+    },
+    {
+      "location": "",
+      "date": "",
+      "power": "",
+      "category": "",
+      "services": "",
+      "id": 10
     }
   ]
 }
